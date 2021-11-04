@@ -3,6 +3,7 @@ package com.hk.board.dtos;
 import java.util.Date;
 
 public class loginDto {
+
 	private String id;
 	private String name;
 	private String password;
@@ -17,6 +18,16 @@ public class loginDto {
 		super();
 	}
 
+	public loginDto(String id, String name, String password, String address, String phone, String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;
+	}
+	
 	public loginDto(String id, String name, String password, String address, String phone, String email, String enabled,
 			String role, Date regdate) {
 		super();

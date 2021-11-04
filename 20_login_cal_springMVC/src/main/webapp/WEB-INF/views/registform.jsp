@@ -15,7 +15,7 @@
 			alert("반드시 아이디를 입력하세요");
 			document.getElementsByname("id")[0].focus();
 		}else{
-			open("idchk.jsp?id="+id,"중복체크","width=400px, height=400px");
+			open("idchk.do?id="+id,"중복체크","width=400px, height=400px");
 		}
 	}
 	

@@ -115,7 +115,7 @@ h3 {
 				<button class="button" type="button"
 					onclick="location.href='JoinUserController.do?command=alluserlist'">회원전체조회</button>
 				<button class="button" type="button"
-					onclick="location.href='CalController.do?command=allschedule'">근무표</button>
+					onclick="location.href='cal.do'">근무표</button>
 				<button class="button" type="button"
 					onclick="location.href='JoinUserController.do?command=userinfo'">나의정보</button>
 			</form>

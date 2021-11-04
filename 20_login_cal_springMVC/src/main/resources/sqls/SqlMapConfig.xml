@@ -7,9 +7,11 @@
 	<!-- 변수 설정 -->
 	<typeAliases>
 		<typeAlias type="com.hk.board.dtos.loginDto" alias="LoginDto"/>
+		<typeAlias type="com.hk.board.dtos.calDto" alias="CalDto"/>
 	</typeAliases>
 	 
 	<mappers>
 	  <mapper resource="./sqls/loginMapper.xml"/>
+	  <mapper resource="./sqls/calMapper.xml"/>
 	</mappers>
 </configuration>

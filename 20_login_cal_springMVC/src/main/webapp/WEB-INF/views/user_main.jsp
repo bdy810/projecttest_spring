@@ -107,13 +107,14 @@ h3 {
 	<h1>환영합니다</h1>
 	<div class="admin">
 		<span class="user"><%=ldto.getId() %></span>님 반갑습니다.
+		(등급:<%=ldto.getRole().equals("USER")?"일반회원":"준회원"%>)
 	</div>
 
 	<div class="box">
 		<nav class="navbar navbar-light bg-light">
 			<form class="btnbox">
-
 				<button class="button" type="button" onclick="location.href='JoinUserController.do?command=userinfo'">나의정보</button>
+				<button class="button" type="button" onclick="location.href='cal.do'">일정관리</button>
 			</form>
 		</nav>
 		<div>

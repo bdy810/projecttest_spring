@@ -13,7 +13,7 @@
 		(#{id},#{password},#{name},#{address},#{phone},#{email},'Y','USER',SYSDATE)
 	</insert>
 	
-	<select id="idChk" parameterType="Map" >
+	<select id="idChk" parameterType="Map" resultType="String" >
 		SELECT ID
 		FROM USERINFO WHERE ID=#{id}
 	</select>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.calboard">
+
+	<insert id="calInsert" parameterType="calDto">
+     	 INSERT INTO CALBOARD VALUES(CALBOARD_SEQ.NEXTVAL,
+      	#{id},#{caltitle},#{calcontent},#{mdate},SYSDATE)
+	</insert>
+
+	<select id="getCalboardList" parameterType="Map" resultType="calDto">
+   		SELECT	CSEQ, ID, CALTITLE, CALCONTENT, MDATE, CALREGDATE 
+		FROM CALBOARD 
+		WHERE ID=#{id} AND SUBSTR(MDATE,1,8) = #{ymd}
+		ORDER BY MDATE 
+   </select>
+   
+   <delete id="mulDel" parameterType="Map">
+		DELETE FROM CALBOARD WHERE CSEQ IN 
+		<foreach collection="cseqs" item="cseq" open="(" close=")" separator=",">
+			#{cseq}
+		</foreach>
+	</delete>
+	
+	<select id="calDetail" parameterType="int" resultType="calDto">
+   		SELECT c.CSEQ, c.ID, u.NAME , c.CALTITLE, c.CALCONTENT,c.MDATE,c.CALREGDATE
+		FROM CALBOARD c,USERINFO u
+		WHERE c.ID=u.ID AND c.CSEQ = #{cseq}
+   </select>
+   
+   <update id="calUpdate" parameterType="calDto">
+   		UPDATE CALBOARD SET CALTITLE=#{caltitle}, CALCONTENT=#{calcontent}, MDATE=#{mdate}
+   							,CALREGDATE=SYSDATE
+   		WHERE CSEQ=#{cseq}
+   </update>
+   
+   <select id="calBoardListView" parameterType="Map" resultType="calDto">
+		SELECT CSEQ, ID, CALTITLE, CALCONTENT, MDATE, CALREGDATE
+		FROM(
+				SELECT ROW_NUMBER() OVER(PARTITION BY SUBSTR(MDATE,1,8) ORDER BY MDATE) AS RN, 
+				       CSEQ, ID, CALTITLE, CALCONTENT, MDATE, CALREGDATE
+				FROM CALBOARD 
+				WHERE ID = #{id} AND  SUBSTR(MDATE,1,6) = #{yyyyMM}
+			) 
+		WHERE RN BETWEEN 1 AND 3
+	</select>
+	
+	<select id="calListCount" parameterType="Map" resultType="int">
+		SELECT  COUNT(*) 
+		FROM CALBOARD 
+		WHERE ID = #{id} AND SUBSTR(MDATE,1,8) = #{yyyyMMdd} 
+	</select>
+   
+</mapper>
