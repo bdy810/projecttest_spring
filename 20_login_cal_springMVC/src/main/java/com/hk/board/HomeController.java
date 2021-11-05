@@ -115,9 +115,9 @@ public class HomeController {
 	//	model.addAttribute("id", a);
 		return "idchk";
 	}
-	
+//	String id, String yyyyMM,
 	@RequestMapping(value = "/cal.do", method = {RequestMethod.POST, RequestMethod.GET})
-	public String cal(HttpSession session,HttpServletRequest request,HttpServletResponse response,String id, String yyyyMM, Locale locale, Model model) {
+	public String cal(HttpSession session,HttpServletRequest request,HttpServletResponse response, Locale locale, Model model) {
 		logger.info("Ä¶¸°´õ º¸±â{}.", locale);
 		if(session.getAttribute("ldto")==null) {
 			return "redirect:index.jsp";
@@ -130,10 +130,10 @@ public class HomeController {
 				year = cal.get(Calendar.YEAR)+"";
 				month = cal.get(Calendar.MONTH)+1+"";
 			}
-			String a = dto.getId();
-			String b= year+Util.isTwo(month);
+			String id = dto.getId();
+			String yyyyMM= year+Util.isTwo(month);
 			
-			List<calDto> list = calservice.calBoardListView(a, b);
+			List<calDto> list = calservice.calBoardListView(id, yyyyMM);
 			request.setAttribute("list", list);
 		}
 		return "calendar";
