@@ -144,7 +144,7 @@
          %>
          <td>
            <a class="countA" style="color:<%=fontColor(dayOfWeek, i)%>"
-            href="CalController.do?command=callist&year=<%=year%>&month=<%=month%>&date=<%=i%>"><%=i%></a>
+            href="callist.do?year=<%=year%>&month=<%=month%>&date=<%=i%>"><%=i%></a>
             <a href="calinsertform.do?year=<%=year%>&month=<%=month%>&date=<%=i%>">
                <img src="img/pen.png" alt="일정추가하기" />
             </a>

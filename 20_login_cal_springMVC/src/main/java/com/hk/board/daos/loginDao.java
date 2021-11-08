@@ -1,6 +1,7 @@
 package com.hk.board.daos;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -41,6 +42,20 @@ public class loginDao implements Interface_loginDao{
 		map.put("id", id);
 		resultId=sqlSessionTemplate.selectOne(namespace+"idChk", map);
 		return resultId;
+	}
+// 유저 정보
+	@Override
+	public loginDto getUser(String id) {
+		loginDto dto = null;
+		dto = sqlSessionTemplate.selectOne(namespace+"getUser", id);
+		return dto;
+	}
+//유저리스트
+	@Override
+	public List<loginDto> getUserList() {
+		List<loginDto> list = null;
+		list = sqlSessionTemplate.selectList(namespace+"getUserList");
+		return list;
 	}
 	
 }

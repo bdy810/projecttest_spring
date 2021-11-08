@@ -4,7 +4,7 @@
 
 <mapper namespace="com.hk.calboard">
 
-	<insert id="calInsert" parameterType="calDto">
+	<insert id="calInsert" parameterType="calDto" >
      	 INSERT INTO CALBOARD VALUES(CALBOARD_SEQ.NEXTVAL,
       	#{id},#{caltitle},#{calcontent},#{mdate},SYSDATE)
 	</insert>

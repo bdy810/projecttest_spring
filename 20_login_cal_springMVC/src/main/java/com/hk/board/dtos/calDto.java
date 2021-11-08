@@ -16,6 +16,18 @@ public class calDto {
 	public calDto() {
 		super();
 	}
+	
+	
+	
+	public calDto(String id, String caltitle, String calcontent, String mdate) {
+		super();
+		this.id = id;
+		this.caltitle = caltitle;
+		this.calcontent = calcontent;
+		this.mdate = mdate;
+	}
+
+
 
 	public calDto(int cseq, String id, String caltitle, String calcontent, String mdate, Date calregdate) {
 		super();

@@ -13,6 +13,7 @@
 	.td{display: table-cell; padding: 5px;}
 	#container{width: 400px; margin: 200px auto;}
 </style>
+
 <script type="text/javascript">
 function registform(){
 	location.href="registform.do";

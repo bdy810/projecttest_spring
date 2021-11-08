@@ -9,12 +9,21 @@
 	
 	<!-- 	순서 모를때 2번쨰 줄처럼 넣어주면 알아서 넣어준다. -->
 	<insert id="insertUser" parameterType="LoginDto">
-		INSERT INTO USERINFO (id,password,name,address,phone,email,enabled,role,regdate) VALUES 
-		(#{id},#{password},#{name},#{address},#{phone},#{email},'Y','USER',SYSDATE)
+		INSERT INTO USERINFO (id,name,password,address,phone,email,enabled,role,regdate) VALUES 
+		(#{id},#{name},#{password},#{address},#{phone},#{email},'Y','USER',SYSDATE)
 	</insert>
 	
 	<select id="idChk" parameterType="Map" resultType="String" >
 		SELECT ID
 		FROM USERINFO WHERE ID=#{id}
+	</select>
+	
+	<select id="getUser" resultType="LoginDto" parameterType="String">
+        SELECT ID, NAME, ADDRESS, PHONE, EMAIL, ROLE
+     	FROM USERINFO WHERE ID=#{id} AND ENABLED='Y'
+   </select>
+   
+   <select id="getUserList" resultType="LoginDto" >
+		SELECT ID ,NAME ,PHONE , EMAIL, ADDRESS ,ROLE ,ENABLED  FROM USERINFO  
 	</select>
 </mapper>

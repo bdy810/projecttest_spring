@@ -113,11 +113,11 @@ h3 {
 		<nav class="navbar navbar-light bg-light">
 			<form class="btnbox">
 				<button class="button" type="button"
-					onclick="location.href='JoinUserController.do?command=alluserlist'">회원전체조회</button>
+					onclick="location.href='alluserlist.do'">회원전체조회</button>
 				<button class="button" type="button"
 					onclick="location.href='cal.do'">근무표</button>
 				<button class="button" type="button"
-					onclick="location.href='JoinUserController.do?command=userinfo'">나의정보</button>
+					onclick="location.href='userinfo.do?id=<%=ldto.getId() %>'">나의정보</button>
 			</form>
 		</nav>
 		<div>

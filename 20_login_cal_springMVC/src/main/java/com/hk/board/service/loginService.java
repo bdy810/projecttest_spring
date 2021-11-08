@@ -1,5 +1,7 @@
 package com.hk.board.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,16 @@ public class loginService implements Interface_loginService{
 	@Override
 	public String idChk(String id) {
 		return logindao.idChk(id);
+	}
+
+	@Override
+	public loginDto getUser(String id) {
+		return logindao.getUser(id);
+	}
+
+	@Override
+	public List<loginDto> getUserList() {
+		return logindao.getUserList();
 	}
 
 }
