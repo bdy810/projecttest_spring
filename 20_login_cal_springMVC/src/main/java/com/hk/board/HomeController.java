@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hk.board.dtos.calDto;
 import com.hk.board.dtos.loginDto;
+import com.hk.board.dtos.noticeDto;
 import com.hk.board.service.Interface_calService;
 import com.hk.board.service.Interface_loginService;
+import com.hk.board.service.Interface_noticeService;
+import com.hk.board.service.noticeService;
 import com.hk.utils.Util;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +41,8 @@ public class HomeController {
 	private Interface_loginService loginservice;
 	@Autowired
 	private Interface_calService calservice;
+	@Autowired
+	private Interface_noticeService noticeservice;
 	
 	@RequestMapping(value = "/home.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -279,4 +284,104 @@ public class HomeController {
 		session.setAttribute("ldto", ldto);
 		return "userlist";
 	}
+	
+	@RequestMapping(value = "/main.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String main(loginDto ldto, HttpSession session,HttpServletRequest request,Locale locale, Model model) throws IOException {
+		logger.info("메인으로 이동{}.", locale);
+		session.setAttribute("ldto", ldto);
+		String id=request.getParameter("id");
+		String role = loginservice.getRole(id);
+		String a = null;
+		if(role.equals("ADMIN")) {
+			a = "admin_main";
+		}else {
+			a = "user_main";
+		}
+		return "a";
+	} //안되는부분
+	
+	@RequestMapping(value = "/noticeboard.do", method = RequestMethod.GET)
+	public String boardList(loginDto ldto, HttpSession session,HttpServletRequest request,Locale locale, Model model) {
+		logger.info("공지목록 조회하기 {}.", locale);
+		
+		List<noticeDto> list = noticeservice.getBoardList();
+		request.setAttribute("list", list);
+		session.setAttribute("ldto", ldto);
+		
+		return "notice";
+	}
+	
+	//글 상세보기
+		@RequestMapping(value = "/detailboard.do", method = RequestMethod.GET)
+		public String detailboard(int seq, Locale locale, Model model) {
+			logger.info("글상세 조회하기 {}.", locale);
+//			int seq=Integer.parseInt(request.getParameter("seq")); 예전에 하던 방식이다. spring에서 필요없어짐 또한 파라미터에 HttpServletRequest request 없어도 댐
+			noticeDto dto = noticeservice.getBoard(seq);
+			model.addAttribute("dto", dto );
+			
+			return "detailboard";
+		}
+		
+		//폼이동
+		@RequestMapping(value = "/insertform.do", method = RequestMethod.GET)
+		public String insertForm(Locale locale, Model model) {
+			logger.info("글쓰기 폼으로 이동 {}.", locale);
+			
+			return "insertboard";
+		}
+		
+		//글 추가 기능 구현			   post방식:사용자로부터 값을 입력받아 요청할때(수정작업) 응답: redirect
+		//                         get방식:보통...조회할때 (select작업) 응답: forward
+		//						   method = {RequestMethod.POST, RequestMethod.GET} :GET, POST방식 어느것이오든 실행
+		@RequestMapping(value = "/insertboard.do", method = {RequestMethod.POST, RequestMethod.GET})
+		public String insertBoard(noticeDto dto, Locale locale, Model model) {
+								 //파라미터에 dto를 선언하면 멤버필드와 동일한 이름이면 모두 받는다.
+								 //@RequestParam("seq")int sseq : seq로 전달된 파라미터를 sseq에 저장한다.
+			logger.info("글추가하기 {}.", locale);
+			boolean isS = noticeservice.insertBoard(dto);
+			if(isS) {
+			//	response.sendRedirect("boardlist.do"); 옛방식
+				 return "redirect:noticeboard.do";  //위와 같은 방식
+				//return "페이지명" --> forward방식으로 응답하는 것과 같다.
+			}else {
+				model.addAttribute("msg","글추가실패");
+				return "error"; //return "페이지명" --> forward방식으로 응답하는 것과 같다.
+			}
+		}
+		
+		
+		@RequestMapping(value = "/updateform.do", method = RequestMethod.GET)
+		public String updateForm(int seq, Locale locale, Model model) {
+			logger.info("수정폼으로 이동 {}.", locale);
+			noticeDto dto= noticeservice.getBoard(seq);
+			model.addAttribute("dto", dto);
+			return "updateboard"; //forward 방식
+		}
+		
+		@RequestMapping(value = "/updateboard.do", method = RequestMethod.POST)
+		public String updateBoard(noticeDto dto, Locale locale, Model model) {
+			logger.info("수정하기 {}.", locale);
+			boolean isS= noticeservice.updateBoard(dto);
+			if(isS){
+				logger.info("수정성공 {}.", locale);
+				return "redirect:detailboard.do?seq="+dto.getSeq();
+			}else {
+				model.addAttribute("msg","글추가실패");
+				return "error";
+			}
+		}
+		
+		@RequestMapping(value = "/muldelboard.do", method = {RequestMethod.POST, RequestMethod.GET})
+		public String mulDelBoard(String[] chk,Locale locale, Model model) {
+			//파라미터 받기: String[] chk --> name="chk" value="1,3,4,5,6" 배열이 올때 받는법
+			logger.info("삭제하기 {}.", locale);
+			boolean isS= noticeservice.mulDel(chk);
+			if(isS){
+				logger.info("삭제성공 {}.", locale);
+				return "redirect:noticeboard.do";
+			}else {
+				model.addAttribute("msg","글추가실패");
+				return "error";
+			}
+		}
 }

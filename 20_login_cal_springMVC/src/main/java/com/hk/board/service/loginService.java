@@ -41,4 +41,9 @@ public class loginService implements Interface_loginService{
 		return logindao.getUserList();
 	}
 
+	@Override
+	public String getRole(String id) {
+		return logindao.getRole(id);
+	}
+
 }

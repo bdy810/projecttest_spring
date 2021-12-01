@@ -57,5 +57,12 @@ public class loginDao implements Interface_loginDao{
 		list = sqlSessionTemplate.selectList(namespace+"getUserList");
 		return list;
 	}
+
+	@Override
+	public String getRole(String id) {
+		String role = null;
+		role = sqlSessionTemplate.selectOne(namespace+"getRole",id);
+		return role;
+	}
 	
 }

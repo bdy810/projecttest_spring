@@ -26,4 +26,8 @@
    <select id="getUserList" resultType="LoginDto" >
 		SELECT ID ,NAME ,PHONE , EMAIL, ADDRESS ,ROLE ,ENABLED  FROM USERINFO  
 	</select>
+	
+	<select id="getRole" parameterType="String" resultType="String">
+		SELECT ROLE FROM USERINFO WHERE ID =#{id} 
+	</select>
 </mapper>

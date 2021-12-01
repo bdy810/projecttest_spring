@@ -20,4 +20,6 @@ public interface Interface_loginService {
 	public loginDto getUser(String id);
 	
 	public List<loginDto> getUserList();
+	
+	public String getRole(String id);
 }

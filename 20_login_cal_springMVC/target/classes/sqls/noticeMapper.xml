@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.hk.notice">
+  	<select id="getBoardList" resultType="noticeDto">
+  		SELECT SEQ, ID, TITLE, CONTENT, REGDATE
+		FROM NOTICE ORDER BY REGDATE DESC
+  	</select>
+  	
+    <select id="getBoard" parameterType="int" resultType="noticeDto">
+		SELECT SEQ,ID,TITLE,CONTENT,REGDATE
+		FROM NOTICE WHERE seq=#{seq}
+	</select>
+	
+	<insert id="insertBoard" parameterType="noticeDto">
+		INSERT INTO NOTICE 
+		VALUES(NOTICE_SEQ.NEXTVAL, #{id} ,#{title} ,#{content} ,SYSDATE)
+	</insert>
+	
+	<update id="updateBoard" parameterType="noticeDto">
+		UPDATE NOTICE
+		SET TITLE=#{title}, CONTENT=#{content}, REGDATE=SYSDATE
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<delete id="delBoard" parameterType="String">
+		DELETE 
+		FROM NOTICE
+		WHERE SEQ=#{seq}
+	</delete>
+	
+	<delete id="muldel" parameterType="Map">
+		DELETE 
+		FROM NOTICE
+		WHERE SEQ IN
+			<foreach collection="seqs" item="seq" open="(" close=")" separator=",">
+				#{seq}
+			</foreach>
+	</delete>
+  </mapper>

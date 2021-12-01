@@ -17,4 +17,6 @@ public interface Interface_loginDao {
 	public loginDto getUser(String id);
 	
 	public List<loginDto> getUserList();
+	
+	public String getRole(String id);
 }

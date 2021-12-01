@@ -115,6 +115,7 @@ h3 {
 			<form class="btnbox">
 				<button class="button" type="button" onclick="location.href='userinfo.do?id=<%=ldto.getId() %>'">나의정보</button>
 				<button class="button" type="button" onclick="location.href='cal.do'">일정관리</button>
+				<button class="button" type="button" onclick="location.href='noticeboard.do'">공지사항 및 자유게시판</button>
 			</form>
 		</nav>
 		<div>

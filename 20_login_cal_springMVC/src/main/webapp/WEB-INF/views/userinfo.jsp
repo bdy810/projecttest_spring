@@ -58,7 +58,7 @@
 		<td colspan="2">
 			<button onclick="updateForm('<%=dto.getId()%>')">수정</button>
 			<button onclick="deleteUser('<%=dto.getId()%>')">탈퇴</button>
-			<button onclick="location.href='index.jsp'">메인</button>
+			<button onclick="location.href='main.do?id=<%=ldto.getId() %>'">메인</button>
 		</td>
 	</tr>
 </table>
