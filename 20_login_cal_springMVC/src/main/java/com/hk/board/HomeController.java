@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hk.board.dtos.addroomDto;
 import com.hk.board.dtos.calDto;
 import com.hk.board.dtos.loginDto;
 import com.hk.board.dtos.noticeDto;
+import com.hk.board.service.Interface_addroomService;
 import com.hk.board.service.Interface_calService;
 import com.hk.board.service.Interface_loginService;
 import com.hk.board.service.Interface_noticeService;
@@ -43,6 +45,8 @@ public class HomeController {
 	private Interface_calService calservice;
 	@Autowired
 	private Interface_noticeService noticeservice;
+	@Autowired
+	private Interface_addroomService addroomservice;
 	
 	@RequestMapping(value = "/home.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -384,4 +388,40 @@ public class HomeController {
 				return "error";
 			}
 		}
+		
+		@RequestMapping(value = "/roomlist.do", method = RequestMethod.GET)
+		public String roomList(loginDto ldto, HttpSession session,HttpServletRequest request,Locale locale, Model model) {
+			logger.info("등록된 방 목록보기 {}.", locale);
+			
+			List<addroomDto> list = addroomservice.getRoomList();
+			request.setAttribute("list", list);
+			session.setAttribute("ldto", ldto);
+			
+			return "roomlist";	//등록된 방 목록으로 이동
+		}
+		
+		//폼이동
+		@RequestMapping(value = "/insertroomform.do", method = RequestMethod.GET)
+		public String insertRoomForm(Locale locale, Model model) {
+			logger.info("글쓰기 폼으로 이동 {}.", locale);
+					
+			return "insertroom";
+		}
+		
+		@RequestMapping(value = "/insertroom.do", method = {RequestMethod.POST, RequestMethod.GET})
+		public String insertRoom(addroomDto dto, Locale locale, Model model) {
+								 //파라미터에 dto를 선언하면 멤버필드와 동일한 이름이면 모두 받는다.
+								 //@RequestParam("seq")int sseq : seq로 전달된 파라미터를 sseq에 저장한다.
+			logger.info("방추가하기 {}.", locale);
+			boolean isS = addroomservice.insertRoom(dto);
+			if(isS) {
+			//	response.sendRedirect("boardlist.do"); 옛방식
+				 return "redirect:roomlist.do";  //위와 같은 방식
+				//return "페이지명" --> forward방식으로 응답하는 것과 같다.
+			}else {
+				model.addAttribute("msg","글추가실패");
+				return "error"; //return "페이지명" --> forward방식으로 응답하는 것과 같다.
+			}
+		}
+	
 }

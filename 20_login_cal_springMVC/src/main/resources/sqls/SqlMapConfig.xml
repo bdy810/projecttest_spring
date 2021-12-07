@@ -9,11 +9,13 @@
 		<typeAlias type="com.hk.board.dtos.loginDto" alias="LoginDto"/>
 		<typeAlias type="com.hk.board.dtos.calDto" alias="CalDto"/>
 		<typeAlias type="com.hk.board.dtos.noticeDto" alias="noticeDto"/>
+		<typeAlias type="com.hk.board.dtos.addroomDto" alias="addroomDto"/>
 	</typeAliases>
 	 
 	<mappers>
 	  <mapper resource="./sqls/loginMapper.xml"/>
 	  <mapper resource="./sqls/calMapper.xml"/>
 	  <mapper resource="./sqls/noticeMapper.xml" />
+	  <mapper resource="./sqls/addroomMapper.xml" />
 	</mappers>
 </configuration>
