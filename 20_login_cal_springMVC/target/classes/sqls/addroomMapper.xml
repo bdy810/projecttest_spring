@@ -11,4 +11,31 @@
   		INSERT INTO ADDROOM
   		VALUES(ADDROOM_SEQ.NEXTVAL, #{name}, #{place}, #{price}, #{writer}, SYSDATE)
   	</insert>
+  	
+  	<select id="detailroom" resultType="addroomDto">
+  		SELECT SEQ, NAME, PLACE, PRICE, WRITER, REGDATE
+  		FROM ADDROOM 
+  		WHERE seq=#{seq}
+  	</select>
+  	
+  	<update id="updateroom" parameterType="addroomDto">
+  		UPDATE ADDROOM
+  		SET NAME=#{name}, PRICE=#{price}, REGDATE=SYSDATE
+  		WHERE SEQ=#{seq} 
+  	</update>
+  	
+  	<delete id="delBoard" parameterType="String">
+		DELETE 
+		FROM ADDROOM
+		WHERE SEQ=#{seq}
+	</delete>
+	
+	<delete id="muldel" parameterType="Map">
+		DELETE 
+		FROM ADDROOM
+		WHERE SEQ IN
+			<foreach collection="seqs" item="seq" open="(" close=")" separator=",">
+				#{seq}
+			</foreach>
+	</delete>
   </mapper>

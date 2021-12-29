@@ -296,9 +296,9 @@ public class HomeController {
 		String id=request.getParameter("id");
 		String role = loginservice.getRole(id);
 		String a = null;
-		if(role.equals("ADMIN")) {
+		if(role.toUpperCase().equals("ADMIN")) {
 			a = "admin_main";
-		}else {
+		}else if(role.toUpperCase().equals("USER")){
 			a = "user_main";
 		}
 		return "a";
@@ -317,9 +317,9 @@ public class HomeController {
 	
 	//글 상세보기
 		@RequestMapping(value = "/detailboard.do", method = RequestMethod.GET)
-		public String detailboard(int seq, Locale locale, Model model) {
+		public String detailboard(int seq, HttpServletRequest request,Locale locale, Model model) {
 			logger.info("글상세 조회하기 {}.", locale);
-//			int seq=Integer.parseInt(request.getParameter("seq")); 예전에 하던 방식이다. spring에서 필요없어짐 또한 파라미터에 HttpServletRequest request 없어도 댐
+//			int seq=Integer.parseInt(request.getParameter("seq"));// 예전에 하던 방식이다. spring에서 필요없어짐 또한 파라미터에 HttpServletRequest request 없어도 댐, 이 방법을 쓰려면 파라미터값에 seq 주지않는다.
 			noticeDto dto = noticeservice.getBoard(seq);
 			model.addAttribute("dto", dto );
 			
@@ -370,7 +370,7 @@ public class HomeController {
 				logger.info("수정성공 {}.", locale);
 				return "redirect:detailboard.do?seq="+dto.getSeq();
 			}else {
-				model.addAttribute("msg","글추가실패");
+				model.addAttribute("msg","글수정실패");
 				return "error";
 			}
 		}
@@ -409,11 +409,17 @@ public class HomeController {
 		}
 		
 		@RequestMapping(value = "/insertroom.do", method = {RequestMethod.POST, RequestMethod.GET})
-		public String insertRoom(addroomDto dto, Locale locale, Model model) {
+		public String insertRoom(addroomDto dto, HttpServletRequest request, Locale locale, Model model) {
 								 //파라미터에 dto를 선언하면 멤버필드와 동일한 이름이면 모두 받는다.
 								 //@RequestParam("seq")int sseq : seq로 전달된 파라미터를 sseq에 저장한다.
 			logger.info("방추가하기 {}.", locale);
-			boolean isS = addroomservice.insertRoom(dto);
+			String name = request.getParameter("name");
+			String place = request.getParameter("place");
+			String price = request.getParameter("price");
+			String writer = request.getParameter("writer");
+//			boolean isS = addroomservice.insertRoom(new addroomDto(0,name,place,price,writer,null));
+			boolean isS = addroomservice.insertRoom(new addroomDto(name,place,price,writer)); //dto생성자에 따라 위 방법과 이 방법이 있다.
+//			boolean isS = addroomservice.insertRoom(dto); 한줄 방식. 파라미터를 받을 필요가 없다.
 			if(isS) {
 			//	response.sendRedirect("boardlist.do"); 옛방식
 				 return "redirect:roomlist.do";  //위와 같은 방식
@@ -424,4 +430,57 @@ public class HomeController {
 			}
 		}
 	
+		//글 상세보기
+		@RequestMapping(value = "/detailroom.do", method = RequestMethod.GET)
+		public String detailRoom(int seq, Locale locale, Model model) {
+			
+			logger.info("글상세 조회하기 {}.", locale);
+//			int seq=Integer.parseInt(request.getParameter("seq")); 예전에 하던 방식이다. spring에서 필요없어짐 또한 파라미터에 HttpServletRequest request 없어도 댐
+			addroomDto dto = addroomservice.detailRoom(seq);
+			model.addAttribute("dto", dto );
+					
+			return "detailroom";
+			}
+
+		
+		@RequestMapping(value = "/updateroomform.do", method = RequestMethod.GET)
+		public String updateroomForm(int seq, Locale locale, Model model) {
+			logger.info("방수정폼으로 이동 {}.", locale);
+			addroomDto dto= addroomservice.detailRoom(seq);
+			model.addAttribute("dto", dto);
+			return "updateroom"; //forward 방식
+		}
+		
+
+		@RequestMapping(value = "/updateroom.do", method = RequestMethod.POST)
+		public String updateRoom(addroomDto dto, HttpServletRequest request,Locale locale, Model model) {
+			logger.info("수정하기 {}.", locale);
+			int seq=Integer.parseInt(request.getParameter("seq"));
+			String name = request.getParameter("name");
+			String price = request.getParameter("price");
+			boolean isS= addroomservice.updateRoom(new addroomDto(seq,name,price));
+	//		boolean isS = addroomservice.insertRoom(new addroomDto(seq,name,null,price,null,null));
+//			boolean isS=addroomservice.updateRoom(dto); 이방식으로하면 파라미터를 받지않아도 dto객체 찾아서 바로간다.
+			if(isS){
+				logger.info("수정성공 {}.", locale);
+				return "redirect:detailroom.do?seq="+dto.getSeq();
+			}else {
+				model.addAttribute("msg","글수정실패");
+				return "error";
+			}
+		}
+		
+		@RequestMapping(value = "/muldelroom.do", method = {RequestMethod.POST, RequestMethod.GET})
+		public String mulDelroom(String[] chk,Locale locale, Model model) {
+			//파라미터 받기: String[] chk --> name="chk" value="1,3,4,5,6" 배열이 올때 받는법
+			logger.info("삭제하기 {}.", locale);
+			boolean isS= addroomservice.mulDel(chk);
+			if(isS){
+				logger.info("삭제성공 {}.", locale);
+				return "redirect:roomlist.do";
+			}else {
+				model.addAttribute("msg","글삭제실패");
+				return "error";
+			}
+		}
 }

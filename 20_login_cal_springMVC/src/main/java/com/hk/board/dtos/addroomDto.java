@@ -34,7 +34,15 @@ public class addroomDto {
 		this.price = price;
 		this.writer = writer;
 	}
+	
 
+	public addroomDto(int seq, String name, String price) {
+		super();
+		this.seq = seq;
+		this.name = name;
+		this.price = price;
+	}
+	
 
 	public int getSeq() {
 		return seq;

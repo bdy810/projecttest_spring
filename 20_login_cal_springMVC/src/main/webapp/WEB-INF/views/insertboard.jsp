@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	function boardList(){
 		//JS: BOM ---> 위치와 관련있는 객체 --> 
-		location.href="boardlist.do";
+		location.href="noticeboard.do";
 	}
 </script>
 </head>

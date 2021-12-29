@@ -14,7 +14,7 @@
 </script>
 </head>
 <body>
-<h1>게시글 작성하기</h1>
+<h1>방 등록하기</h1>
 <form action="insertroom.do" method="post">
 
 	<table border ="1">

@@ -1,6 +1,8 @@
 package com.hk.board.daos;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +29,26 @@ public class addroomDao implements Interface_addroomDao{
 
 	@Override
 	public addroomDto detailRoom(int seq) {
-		
-		return null;
+		return sqlSession.selectOne(namespace+"detailroom",seq);
 	}
 
 	@Override
 	public boolean updateRoom(addroomDto dto) {
-		
-		return false;
+		int count=sqlSession.update(namespace+"updateroom", dto);
+		return count>0?true:false;
 	}
 
 	@Override
 	public boolean delRoom(int seq) {
-		
-		return false;
+		int count = sqlSession.delete(namespace+"delRoom", seq);
+		return count>0?true:false;
 	}
 
 	@Override
 	public boolean mulDel(String[] seqs) {
-		
-		return false;
+		Map<String, String[]>map = new HashMap<>();
+		map.put("seqs", seqs);
+		int count = sqlSession.delete(namespace+"muldel", map);
+		return count>0?true:false;
 	}
 }

@@ -25,22 +25,22 @@ public class addroomService implements Interface_addroomService{
 
 	@Override
 	public addroomDto detailRoom(int seq) {
-		return null;
+		return addroomDao.detailRoom(seq);
 	}
 
 	@Override
 	public boolean updateRoom(addroomDto dto) {
-		return false;
+		return addroomDao.updateRoom(dto);
 	}
 
 	@Override
 	public boolean delRoom(int seq) {
-		return false;
+		return addroomDao.delRoom(seq);
 	}
 
 	@Override
 	public boolean mulDel(String[] seqs) {
-		return false;
+		return addroomDao.mulDel(seqs);
 	}
 	
 }

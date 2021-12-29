@@ -107,6 +107,7 @@
       <th>번호</th>
       <th>건물명</th>
       <th>위치</th>
+      <th>가격</th>
       <th>작성자</th>
    </tr>
  <%
@@ -126,6 +127,7 @@
 	%>
 	<tr>
 		<td id="zz" colspan="6">
+			<input class="btn btn-danger" type="submit" value="삭제" />
 			<button class="btn btn-secondary" type="button" onclick="location.href='index.jsp'">메인</button>
 		</td>
 	</tr>
